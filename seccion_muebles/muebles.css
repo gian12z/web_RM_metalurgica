@@ -1,0 +1,174 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: -webkit-linear-gradient(90deg, #000000,#0d1521,#070e18);
+    background: linear-gradient(90deg, #000000,#0d1521,#070e18);
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+h1 {
+    color: #fff;
+    font-family: "Limelight", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+    margin-top: 40px;
+}
+
+h2{
+    color: #fff;
+    font-family: "Limelight", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-align: left;
+    margin-top: 40px;
+}
+
+.contenedor-productos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 20px;
+    max-width: 650px;
+    margin: auto;
+}
+
+.producto {
+    background: #181a1b;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    width: 150px;
+    height: 260px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: auto;
+    cursor: pointer;
+    position: relative;
+}
+
+.producto:hover {
+    transform: scale(1.05);
+    box-shadow: #31464f 0px 0px 40px;
+}
+
+.producto[data-link]:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 25px rgba(49, 70, 79, 0.6);
+}
+
+.producto[data-link]::after {
+    content: "👆 Click para ver detalles";
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 123, 255, 0.9);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.producto[data-link]:hover::after {
+    opacity: 1;
+}
+
+.producto img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.producto h3 {
+    color: #fff;
+    font-size: 14px;
+    margin: 10px 0 3px;
+    font-family: "limelight", sans-serif;
+}
+
+.precio {
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 3px 0 3px;
+    font-family: "Limelight", sans-serif;
+}
+
+.valor{
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 3px 0 3px;
+    font-family: "Limelight", sans-serif;
+}
+
+h2 {
+    color: #fff;
+    font-family: "Limelight", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-left: 3%;
+}
+
+section{
+    display: flex;
+    width: 800px;
+    height: 530px;
+    margin: auto;
+}
+section img{
+    width: 0px;
+    flex-grow: 1;
+    object-fit: cover;
+    opacity: .8;
+    transition: .5s ease;
+}
+section img:hover{
+    cursor: crosshair;
+    width: 300px;
+    opacity: 1;
+    filter: contrast(120%);
+}
+
+/* BOTONES DE COMPRAR */
+.boton-comprar {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+    width: 90%;
+}
+
+.boton-comprar:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.boton-comprar:active {
+    transform: translateY(0px);
+}
+
+/* FOOTER */
+
+/* Los estilos de footer se heredan del styles.css principal */
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

@@ -1,0 +1,109 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: -webkit-linear-gradient(90deg, #000000,#0d1521,#070e18);
+    background: linear-gradient(90deg, #000000,#0d1521,#070e18);
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+/* Arreglar el padding para la navegación fija */
+.main-content {
+    padding-top: 120px;
+    padding-bottom: 20px;
+}
+
+.producto-container {
+    display: flex;
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 50px;
+}
+
+.imagen-producto {
+    flex: 1;
+    padding: 20px;
+    background-color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imagen-producto img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.info-producto {
+    flex: 1;
+    padding: 20px;
+    color: #fff;
+}
+
+.precio {
+    font-size: 24px;
+    color: #00ff88;
+    margin-bottom: 10px;
+}
+
+.boton-comprar {
+    background-color: #00aaff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 320px;
+    margin-left: 350px;
+}
+
+.boton-comprar:hover {
+    background-color: #0077cc;
+}
+
+/* Los estilos de footer se heredan del styles.css principal */
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Responsive Design para página de producto */
+@media (max-width: 768px) {
+    .main-content {
+        padding-top: 160px !important;
+    }
+    
+    .producto-container {
+        flex-direction: column;
+        margin: 10px;
+    }
+    
+    .boton-comprar {
+        margin-top: 20px;
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        padding-top: 180px !important;
+    }
+    
+    .imagen-producto, .info-producto {
+        padding: 15px;
+    }
+    
+    .precio {
+        font-size: 20px;
+    }
+}
+

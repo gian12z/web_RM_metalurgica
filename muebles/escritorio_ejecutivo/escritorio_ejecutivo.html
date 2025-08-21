@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escritorio Ejecutivo - RM Metalúrgica</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="icon" href="/imagenes_RM/LogoRM.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="navbar">
+                <a href="/" class="logo">
+                    <img src="/imagenes_RM/LogoRM.jpg" alt="RM Metalúrgica">
+                </a>
+                <ul class="nav-links">
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/seccion_muebles/muebles.html">Muebles</a></li>
+                    <li><a href="/preguntas_frecuentes/pfrecuentes.html">Preguntas frecuentes</a></li>
+                    <li><a href="/app/pages/sesion.html">Usuario</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <section class="product-section">
+                <div class="product-container">
+                    <div class="product-image">
+                        <img src="/imagenes_RM/mesa_y_sillas.jpg" alt="Escritorio Ejecutivo">
+                    </div>
+                    
+                    <div class="product-info">
+                        <h1>Escritorio Ejecutivo</h1>
+                        <p class="product-description">
+                            Escritorio ejecutivo de alta gama, diseñado para profesionales que buscan elegancia y funcionalidad.
+                            Perfecto para oficinas ejecutivas y espacios de trabajo de prestigio.
+                        </p>
+                        
+                        <div class="product-features">
+                            <h3>Características:</h3>
+                            <ul>
+                                <li>Material: Madera premium con acabado ejecutivo</li>
+                                <li>Diseño elegante y profesional</li>
+                                <li>Amplios cajones y compartimientos</li>
+                                <li>Superficie de trabajo generosa</li>
+                                <li>Estructura robusta y duradera</li>
+                                <li>Acabado de lujo resistente</li>
+                            </ul>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn-whatsapp" onclick="consultarPorWhatsApp()">
+                                <span>💬</span> Consultar por WhatsApp
+                            </button>
+                            <button class="btn-comprar" onclick="comprarPorWhatsApp()">
+                                <span>🛒</span> Comprar ahora
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RM Metalúrgica</h3>
+                    <p>Muebles de calidad para tu hogar</p>
+                    <div class="social-icons">
+                        <a href="#"><img src="/imagenes_RM/icons8-facebook-nuevo-50.png" alt="Facebook"></a>
+                        <a href="#"><img src="/imagenes_RM/icons8-instagram-50.png" alt="Instagram"></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>📞 +54 9 291 444-7897</p>
+                    <p>📧 info@rmmetalurgica.com</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function consultarPorWhatsApp() {
+            const mensaje = encodeURIComponent("Hola! Me interesa el Escritorio Ejecutivo. ¿Podrían darme más información sobre precios y disponibilidad?");
+            const numeroSoporte = "5492914447897"; // Número de soporte
+            window.open(`https://wa.me/${numeroSoporte}?text=${mensaje}`, '_blank');
+        }
+
+        function comprarPorWhatsApp() {
+            const mensaje = encodeURIComponent("Hola! Quiero comprar el Escritorio Ejecutivo. ¿Cuál es el proceso de compra?");
+            const numeroCompras = "5492915067326"; // Número de compras
+            window.open(`https://wa.me/${numeroCompras}?text=${mensaje}`, '_blank');
+        }
+    </script>
+</body>
+</html>

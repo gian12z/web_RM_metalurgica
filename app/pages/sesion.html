@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - RM Metalúrgica</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/sesion.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Tint&family=Limelight&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="contenedor-principal">
+        <!-- La navegación se cargará dinámicamente -->
+        <nav class="nav-bar" id="navigation">
+        </nav>
+        
+    <main class="main-content">
+        <h1>Se parte de RM Metalúrgica</h1>
+        <form id="register-form" novalidate>
+        <label for="usuario">Nombre de usuario:</label>
+        <input type="text" id="usuario" name="usuario" >
+        <!-- <span id="error-nombre" style="color: red; display: none;">El nombre no puede estar vacío</span> -->
+        <br>
+
+        <label for="clave">Contraseña:</label>
+        <input type="password" id="clave" name="clave" >
+        <!-- <span id="error-clave" style="color: red; display: none;">La contraseña esta vacía</span> -->
+        <br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" >
+        <!-- <span id="error-email" style="color: red; display: none;">Formato de email no válido</span> -->
+        <br>
+
+        <label for="telefono"> Numero de telefono: </label>
+        <input type="number" id="telefono" name="telefono">
+
+        
+        <p> ¿Quieres recibir novedades a tu mail sobre ofertas o nuevos diseños? </p>
+        <label>
+            <input type="radio" name="newsletter" value="si"> Si, quiero
+        </label><br>
+        <label>
+            <input type="radio" name="newsletter" value="no"> No, no quiero
+        </label>
+
+
+        <p> Dejanos tu comentario.(opcional) </p>
+        <label for="comentarios"></label>
+        <textarea id="comentarios" name="comentarios"></textarea>
+        <br>
+        
+        <!-- Mensaje de error/éxito -->
+        <div id="mensaje-error" style="display: none; margin: 10px 0; padding: 10px; border-radius: 5px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;"></div>
+        
+        <p class="error escondido" id="error-general">Hubo un error al registrarse</p>
+
+        
+
+        <div class="botones">
+            <button type="submit" id="enviar">Registrarme</button>
+            <button type="reset" id="borrar">Borrar</button>
+        </div>
+        </form>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="/imagenes_RM/LogoRM.ico" alt="Logo RM">
+            </div>
+            <p>© RM Metalúrgica - Síguenos en:</p>
+            <div class="footer-redes">
+                <a href="https://www.instagram.com/rm__metalurgica/" target="_blank">
+                    <img src="/imagenes_RM/icons8-instagram-50.png" alt="instagram">
+                </a>
+                <a href="https://www.facebook.com/ramirocapc" target="_blank">
+                    <img src="/imagenes_RM/icons8-facebook-nuevo-50.png" alt="facebook">
+                </a>
+            </div>
+        </div>
+        <div class="footer-copy">
+            <p>Todos los derechos reservados</p>
+        </div>
+    </footer>
+    </div>
+    
+    <script src="/navegacion.js"></script>
+    <script src="/sesion.js"></script>
+</body>
+</html>

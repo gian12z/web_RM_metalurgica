@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - RM Metalúrgica</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/perfil.css">
+</head>
+<body>
+    <div class="contenedor-principal">
+        <nav class="nav-bar">
+            <div class="nav-logo">
+                <img src="/imagenes_RM/LogoRM.jpg" alt="Logo RM Metalúrgica">
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/muebles">Muebles</a></li>
+                <li><a href="/preguntas-frecuentes">Preguntas Frecuentes</a></li>
+            </ul>
+            <!-- Los elementos de autenticación se agregan dinámicamente aquí -->
+        </nav>
+
+        <main class="main-content">
+            <div class="perfil-container">
+                <div class="perfil-header">
+                    <img src="/imagenes_RM/LogoRM.jpg" alt="Avatar" class="perfil-avatar">
+                    <h1>Mi Perfil</h1>
+                    <p class="perfil-bienvenida">Bienvenido/a a tu perfil de RM Metalúrgica</p>
+                </div>
+
+                <div class="perfil-info">
+                    <div class="info-card">
+                        <h2>Información de Usuario</h2>
+                        <div class="info-item">
+                            <span class="info-label">Usuario:</span>
+                            <span class="info-value" id="usuario-nombre">Cargando...</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Miembro desde:</span>
+                            <span class="info-value" id="fecha-registro">Cargando...</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Estado:</span>
+                            <span class="info-value status-activo">Activo</span>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h2>Acciones</h2>
+                        <div class="acciones-container">
+                            <button class="btn-accion btn-info" id="btn-soporte">
+                                <span>💬</span>
+                                Contactar Soporte
+                            </button>
+                            <button class="btn-accion btn-danger" id="btn-logout">
+                                <span>🚪</span>
+                                Cerrar Sesión
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h2>Actividad Reciente</h2>
+                    <div class="actividad-lista">
+                        <div class="actividad-item">
+                            <span class="actividad-fecha">Hoy</span>
+                            <span class="actividad-texto">Iniciaste sesión en tu cuenta</span>
+                        </div>
+                        <div class="actividad-item">
+                            <span class="actividad-fecha">Ayer</span>
+                            <span class="actividad-texto">Visitaste la sección de Muebles</span>
+                        </div>
+                        <div class="actividad-item">
+                            <span class="actividad-fecha">Hace 2 días</span>
+                            <span class="actividad-texto">Consultaste Preguntas Frecuentes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="/imagenes_RM/LogoRM.jpg" alt="Logo RM Metalúrgica">
+                </div>
+                <div class="footer-redes">
+                    <a href="https://www.instagram.com/rm__metalurgica/" target="_blank">
+                        <img src="/imagenes_RM/icons8-instagram-50.png" alt="Instagram">
+                    </a>
+                    <a href="https://www.facebook.com/ramirocapc" target="_blank">
+                        <img src="/imagenes_RM/icons8-facebook-nuevo-50.png" alt="Facebook">
+                    </a>
+                </div>
+            </div>
+            <div class="footer-copy">
+                <p>&copy; 2025 RM Metalúrgica. Todos los derechos reservados.</p>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="/navegacion.js"></script>
+    <script src="/force-logout.js"></script>
+    <script src="/perfil.js"></script>
+</body>
+</html>
