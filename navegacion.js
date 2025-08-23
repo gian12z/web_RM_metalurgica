@@ -572,10 +572,91 @@ document.addEventListener('DOMContentLoaded', () => {
     // Configurar logout siempre (tanto para dropdown como para botón estático)
     console.log('🔧 Configurando logout desde DOMContentLoaded...');
     configurarLogout();
+    
+    // Registrar actividad de página visitada
+    registrarActividadPagina();
 });
+
+// Función para registrar actividad del usuario
+function registrarActividadUsuario(texto, icono = '📋') {
+    // Solo registrar si el usuario está autenticado
+    if (!estaAutenticado()) return;
+    
+    try {
+        const actividades = JSON.parse(localStorage.getItem('actividadesUsuario') || '[]');
+        const ahora = new Date();
+        
+        // Determinar el texto de fecha
+        let fechaTexto = 'Hace un momento';
+        
+        const nuevaActividad = {
+            fecha: fechaTexto,
+            texto: texto,
+            icono: icono,
+            timestamp: ahora.getTime()
+        };
+        
+        // Evitar duplicados recientes (mismo texto en las últimas 30 minutos)
+        const treintaMinutosAtras = ahora.getTime() - (30 * 60 * 1000);
+        const actividadesFiltradas = actividades.filter(act => 
+            !(act.texto === texto && act.timestamp && act.timestamp > treintaMinutosAtras)
+        );
+        
+        // Agregar nueva actividad al inicio
+        actividadesFiltradas.unshift(nuevaActividad);
+        
+        // Mantener solo las últimas 3 actividades
+        const actividadesLimitadas = actividadesFiltradas.slice(0, 3);
+        
+        localStorage.setItem('actividadesUsuario', JSON.stringify(actividadesLimitadas));
+        
+        console.log('📝 Actividad registrada:', nuevaActividad);
+        
+    } catch (error) {
+        console.error('Error al registrar actividad:', error);
+    }
+}
+
+// Función para registrar actividad según la página actual
+function registrarActividadPagina() {
+    if (!estaAutenticado()) return;
+    
+    const path = window.location.pathname;
+    const pagina = window.location.href;
+    
+    // Determinar actividad según la página
+    if (path === '/' || path === '/index.html') {
+        registrarActividadUsuario('Visitaste la página principal', '🏠');
+    } else if (path.includes('/muebles') || path.includes('muebles')) {
+        if (path === '/muebles' || path.includes('muebles.html')) {
+            registrarActividadUsuario('Exploraste el catálogo de muebles', '🛋️');
+        } else if (path.includes('mesa_ratona')) {
+            registrarActividadUsuario('Viste información de mesas ratonas', '🪑');
+        } else if (path.includes('escritorio')) {
+            registrarActividadUsuario('Consultaste escritorios disponibles', '💻');
+        } else if (path.includes('estanteria')) {
+            registrarActividadUsuario('Exploraste estanterías', '📚');
+        } else if (path.includes('barra')) {
+            registrarActividadUsuario('Viste barras y banquetas', '🍺');
+        } else {
+            registrarActividadUsuario('Exploraste productos específicos', '🛋️');
+        }
+    } else if (path.includes('/preguntas') || path.includes('pfrecuentes')) {
+        registrarActividadUsuario('Consultaste preguntas frecuentes', '❓');
+    } else if (path.includes('/perfil')) {
+        registrarActividadUsuario('Accediste a tu perfil', '👤');
+    } else if (path.includes('/login') || path.includes('sesion_login')) {
+        // No registrar login aquí, se registra desde el script de login
+    } else if (path.includes('/register') || path.includes('sesion.html')) {
+        // No registrar registro aquí, se registra desde el script de registro
+    }
+}
 
 // Función global para actualizar navegación después del login
 window.actualizarNavegacionDespuesLogin = actualizarNavegacion;
+
+// Función global para registrar actividades (para usar desde otros scripts)
+window.registrarActividadUsuario = registrarActividadUsuario;
 
 // Escuchar cambios en las cookies (para detectar login/logout)
 let cookieAnterior = document.cookie;

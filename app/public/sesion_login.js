@@ -86,6 +86,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.actualizarNavegacionDespuesLogin();
                 }
                 
+                // Registrar actividad de login exitoso
+                if (typeof window.registrarActividadUsuario === 'function') {
+                    window.registrarActividadUsuario('Iniciaste sesión exitosamente', '🔑');
+                }
+                
                 // Esperar un poco para que la navegación se actualice
                 setTimeout(() => {
                     if (resJson.redirect) {

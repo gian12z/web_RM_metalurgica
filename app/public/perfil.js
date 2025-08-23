@@ -77,6 +77,8 @@ async function cargarInformacionPerfil() {
         
         if (data.success && data.user) {
             const usuario = data.user;
+            console.log('📅 Datos de usuario completos:', usuario);
+            console.log('📅 Fecha de creación específica:', usuario.fecha_creacion);
             
             // Actualizar nombre de usuario
             const usuarioNombre = document.getElementById('usuario-nombre');
@@ -87,12 +89,28 @@ async function cargarInformacionPerfil() {
             // Actualizar fecha de registro
             const fechaRegistro = document.getElementById('fecha-registro');
             if (fechaRegistro && usuario.fecha_creacion) {
-                const fecha = new Date(usuario.fecha_creacion);
-                fechaRegistro.textContent = fecha.toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
+                try {
+                    // Crear fecha desde el string de la base de datos
+                    const fecha = new Date(usuario.fecha_creacion);
+                    
+                    // Verificar que la fecha es válida
+                    if (!isNaN(fecha.getTime())) {
+                        fechaRegistro.textContent = fecha.toLocaleDateString('es-ES', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                    } else {
+                        console.error('Fecha inválida recibida:', usuario.fecha_creacion);
+                        fechaRegistro.textContent = 'Fecha no válida';
+                    }
+                } catch (error) {
+                    console.error('Error al formatear fecha:', error);
+                    fechaRegistro.textContent = 'Error en formato de fecha';
+                }
+            } else if (fechaRegistro) {
+                console.log('No se recibió fecha de creación:', usuario.fecha_creacion);
+                fechaRegistro.textContent = 'No disponible';
             }
             
             // Actualizar actividad reciente con datos más realistas
@@ -127,17 +145,21 @@ function actualizarActividadReciente(usuario) {
     
     // Crear actividades realistas basadas en la información del usuario
     const actividades = [];
+    const ahora = new Date();
     
     // Actividad de hoy - inicio de sesión
     actividades.push({
         fecha: 'Hoy',
-        texto: 'Iniciaste sesión en tu cuenta'
+        texto: 'Iniciaste sesión en tu cuenta',
+        icono: '🔑'
     });
+    
+    // Obtener actividades del localStorage (navegación del usuario)
+    const actividadesGuardadas = obtenerActividadesUsuario();
     
     // Si el usuario es reciente (menos de 7 días)
     if (usuario && usuario.fecha_creacion) {
         const fechaCreacion = new Date(usuario.fecha_creacion);
-        const ahora = new Date();
         const diasDesdeCreacion = Math.floor((ahora - fechaCreacion) / (1000 * 60 * 60 * 24));
         
         if (diasDesdeCreacion <= 7) {
@@ -146,45 +168,109 @@ function actualizarActividadReciente(usuario) {
                                      `Hace ${diasDesdeCreacion} días`;
             actividades.push({
                 fecha: fechaCreacionTexto,
-                texto: 'Te registraste en RM Metalúrgica'
-            });
-        } else {
-            // Usuario más antiguo
-            actividades.push({
-                fecha: 'Ayer',
-                texto: 'Visitaste la sección de Muebles'
-            });
-            
-            actividades.push({
-                fecha: 'Hace 2 días',
-                texto: 'Consultaste información de contacto'
+                texto: 'Te registraste en RM Metalúrgica',
+                icono: '🎉'
             });
         }
+    }
+    
+    // Agregar actividades del localStorage si existen
+    if (actividadesGuardadas.length > 0) {
+        actividadesGuardadas.forEach(act => actividades.push(act));
     } else {
-        // Actividades por defecto
+        // Actividades por defecto si no hay datos guardados
         actividades.push({
             fecha: 'Ayer',
-            texto: 'Visitaste la sección de Muebles'
+            texto: 'Visitaste la sección de Muebles',
+            icono: '🛋️'
         });
         
         actividades.push({
             fecha: 'Hace 2 días',
-            texto: 'Consultaste Preguntas Frecuentes'
+            texto: 'Consultaste Preguntas Frecuentes',
+            icono: '❓'
         });
     }
     
+    // Limitar a máximo 5 actividades
+    const actividadesLimitadas = actividades.slice(0, 5);
+    
     // Crear elementos HTML para cada actividad
-    actividades.forEach(actividad => {
+    actividadesLimitadas.forEach((actividad, index) => {
         const actividadItem = document.createElement('div');
         actividadItem.className = 'actividad-item';
+        actividadItem.style.animationDelay = `${index * 0.1}s`;
         
         actividadItem.innerHTML = `
-            <span class="actividad-fecha">${actividad.fecha}</span>
-            <span class="actividad-texto">${actividad.texto}</span>
+            <span class="actividad-icono">${actividad.icono || '📋'}</span>
+            <div class="actividad-info">
+                <span class="actividad-fecha">${actividad.fecha}</span>
+                <span class="actividad-texto">${actividad.texto}</span>
+            </div>
         `;
         
         actividadLista.appendChild(actividadItem);
     });
+    
+    // Agregar animación de entrada
+    actividadLista.classList.add('actividades-cargadas');
+}
+
+// Función para obtener actividades del usuario desde localStorage
+function obtenerActividadesUsuario() {
+    try {
+        const actividades = JSON.parse(localStorage.getItem('actividadesUsuario') || '[]');
+        return actividades.slice(0, 3); // Máximo 3 actividades guardadas
+    } catch (error) {
+        console.error('Error al obtener actividades:', error);
+        return [];
+    }
+}
+
+// Función para guardar una nueva actividad
+function guardarActividad(texto, icono = '📋') {
+    try {
+        const actividades = obtenerActividadesUsuario();
+        const ahora = new Date();
+        const hoy = ahora.toDateString();
+        
+        // Determinar el texto de fecha
+        let fechaTexto = 'Hace un momento';
+        const minutosTranscurridos = Math.floor((ahora - new Date(ahora.toDateString())) / (1000 * 60));
+        
+        if (minutosTranscurridos < 60) {
+            fechaTexto = 'Hace un momento';
+        } else if (minutosTranscurridos < 1440) { // Menos de 24 horas
+            const horas = Math.floor(minutosTranscurridos / 60);
+            fechaTexto = horas === 1 ? 'Hace 1 hora' : `Hace ${horas} horas`;
+        }
+        
+        const nuevaActividad = {
+            fecha: fechaTexto,
+            texto: texto,
+            icono: icono,
+            timestamp: ahora.getTime()
+        };
+        
+        // Evitar duplicados recientes (mismo texto en las últimas 2 horas)
+        const dosHorasAtras = ahora.getTime() - (2 * 60 * 60 * 1000);
+        const actividadesFiltradas = actividades.filter(act => 
+            !(act.texto === texto && act.timestamp && act.timestamp > dosHorasAtras)
+        );
+        
+        // Agregar nueva actividad al inicio
+        actividadesFiltradas.unshift(nuevaActividad);
+        
+        // Mantener solo las últimas 3 actividades
+        const actividadesLimitadas = actividadesFiltradas.slice(0, 3);
+        
+        localStorage.setItem('actividadesUsuario', JSON.stringify(actividadesLimitadas));
+        
+        console.log('💾 Actividad guardada:', nuevaActividad);
+        
+    } catch (error) {
+        console.error('Error al guardar actividad:', error);
+    }
 }
 
 // Función para cerrar sesión
@@ -321,7 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
     agregarEfectosVisuales();
 });
 
-// CSS para el efecto ripple
+// CSS para el efecto ripple y actividades mejoradas
 const style = document.createElement('style');
 style.textContent = `
     .btn-accion {
@@ -342,6 +428,86 @@ style.textContent = `
         to {
             transform: scale(2);
             opacity: 0;
+        }
+    }
+    
+    /* Estilos mejorados para actividades */
+    .actividad-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #eee;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: slideInActivity 0.5s ease forwards;
+    }
+    
+    .actividad-item:last-child {
+        border-bottom: none;
+    }
+    
+    .actividad-icono {
+        font-size: 1.2em;
+        margin-right: 12px;
+        width: 24px;
+        text-align: center;
+    }
+    
+    .actividad-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .actividad-fecha {
+        font-size: 0.85em;
+        color: #666;
+        font-weight: 600;
+        margin-bottom: 2px;
+    }
+    
+    .actividad-texto {
+        font-size: 0.9em;
+        color: #333;
+        line-height: 1.3;
+    }
+    
+    .actividad-cargando {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+        font-style: italic;
+    }
+    
+    .actividades-cargadas .actividad-cargando {
+        display: none;
+    }
+    
+    @keyframes slideInActivity {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Responsive para actividades */
+    @media (max-width: 768px) {
+        .actividad-item {
+            padding: 10px 0;
+        }
+        
+        .actividad-icono {
+            font-size: 1em;
+            margin-right: 8px;
+            width: 20px;
+        }
+        
+        .actividad-fecha {
+            font-size: 0.8em;
+        }
+        
+        .actividad-texto {
+            font-size: 0.85em;
         }
     }
 `;

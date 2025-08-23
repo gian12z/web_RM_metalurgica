@@ -6,8 +6,25 @@ body {
     background: linear-gradient(90deg, #000000,#0d1521,#070e18);
     font-family: Arial, sans-serif;
     overflow-x: hidden;
-    justify-content: center;
+    display: flex;
+    flex-direction: column;
 }
+
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 20px 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
 .acordeon{
     margin: 60px auto;
     width: 100%;
@@ -39,12 +56,21 @@ input[type="checkbox"]{
 
 .acordeon ul{
     display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
 }
 
 .acordeon .content p {
+    text-align: center;
     white-space: normal;
     overflow: visible;
     text-overflow: unset;
+    margin: 0;
+    padding: 10px 0;
+    line-height: 1.6;
+    font-size: 16px;
 }
 
 .acordeon li{
@@ -79,11 +105,13 @@ label::after{
     text-align: center;
     padding: 0 20px;
     max-height: 0;
-    width: 100%;
+    width: calc(100% - 40px);
     max-width: 700px;
     overflow: hidden;
     transition: max-height 0.5s, padding 0.5s;
-    line-height: 1.2;
+    line-height: 1.6;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
 input[type="checkbox"]:checked ~ .content {

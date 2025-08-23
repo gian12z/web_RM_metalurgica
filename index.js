@@ -1,11 +1,19 @@
+import dotenv from 'dotenv';
+
+// IMPORTANTE: Cargar .env PRIMERO
+dotenv.config();
+
+// Debug: verificar variables
+console.log('🔍 Variables .env cargadas:');
+console.log(`   DB_HOST: ${process.env.DB_HOST}`);
+console.log(`   DB_PORT: ${process.env.DB_PORT}`);
+console.log(`   DB_PASSWORD: ${process.env.DB_PASSWORD ? '***' : 'NO_DEFINIDA'}`);
+
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import { fileURLToPath } from 'url';
-import dotenv from 'dotenv';
-import { testConnection } from './app/config/database.js';
-
-dotenv.config(); 
+import { testConnection, userQueries } from './app/config/database.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import { methods as authentication} from './app/controllers/authentication.js';

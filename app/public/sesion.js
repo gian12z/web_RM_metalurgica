@@ -75,6 +75,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 const resJson = await res.json();
                 console.log("Respuesta exitosa:", resJson);
                 
+                // Registrar actividad de registro exitoso
+                if (typeof window.registrarActividadUsuario === 'function') {
+                    window.registrarActividadUsuario('Te registraste en RM Metalúrgica', '🎉');
+                }
+                
                 if (resJson.redirect) {
                     window.location.href = resJson.redirect;
                 } else {

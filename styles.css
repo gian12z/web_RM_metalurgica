@@ -152,6 +152,24 @@ body {
     font-size: 0.9em;
 }
 
+/* Estilo para la firma del desarrollador */
+.developer-signature {
+    margin-top: 8px !important;
+    font-size: 0.8em !important;
+    color: #aaa !important;
+}
+
+.developer-signature a {
+    color: #66b3ff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.developer-signature a:hover {
+    color: #4da6ff;
+    text-decoration: underline;
+}
+
 /* Estilos para el contenedor principal */
 .contenedor-principal {
     display: flex;
