@@ -14,6 +14,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import { fileURLToPath } from 'url';
 import { testConnection, userQueries } from './app/config/database.js';
+import db from './app/config/database.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import { methods as authentication} from './app/controllers/authentication.js';

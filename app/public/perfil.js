@@ -62,11 +62,14 @@ function mostrarModalConfirmacion(mensaje, titulo = 'Confirmación') {
 // Función para obtener y mostrar información del usuario
 async function cargarInformacionPerfil() {
     try {
-        console.log('📡 Obteniendo información del usuario...');
+        console.log('� Iniciando carga de información del perfil...');
+        console.log('�📡 Obteniendo información del usuario...');
         
         const response = await fetch('/api/user-info', {
             credentials: 'include'
         });
+        
+        console.log('📥 Respuesta recibida:', response.status, response.statusText);
         
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -80,26 +83,46 @@ async function cargarInformacionPerfil() {
             console.log('📅 Datos de usuario completos:', usuario);
             console.log('📅 Fecha de creación específica:', usuario.fecha_creacion);
             
+            // Actualizar título del perfil con el nombre del usuario
+            const perfilTitulo = document.getElementById('perfil-titulo');
+            console.log('🎯 Elemento perfil-titulo encontrado:', perfilTitulo);
+            if (perfilTitulo && usuario.username) {
+                console.log('✏️ Cambiando título a:', usuario.username);
+                perfilTitulo.textContent = usuario.username;
+                // Actualizar también la descripción para personalizarla
+                const perfilBienvenida = document.querySelector('.perfil-bienvenida');
+                if (perfilBienvenida) {
+                    console.log('✏️ Cambiando mensaje de bienvenida');
+                    perfilBienvenida.textContent = `Bienvenido/a ${usuario.username} a tu perfil de RM Metalúrgica`;
+                }
+            }
+            
             // Actualizar nombre de usuario
             const usuarioNombre = document.getElementById('usuario-nombre');
+            console.log('🎯 Elemento usuario-nombre encontrado:', usuarioNombre);
             if (usuarioNombre) {
+                console.log('✏️ Cambiando nombre de usuario a:', usuario.username);
                 usuarioNombre.textContent = usuario.username;
             }
             
             // Actualizar fecha de registro
             const fechaRegistro = document.getElementById('fecha-registro');
+            console.log('🎯 Elemento fecha-registro encontrado:', fechaRegistro);
             if (fechaRegistro && usuario.fecha_creacion) {
+                console.log('📅 Procesando fecha:', usuario.fecha_creacion);
                 try {
                     // Crear fecha desde el string de la base de datos
                     const fecha = new Date(usuario.fecha_creacion);
                     
                     // Verificar que la fecha es válida
                     if (!isNaN(fecha.getTime())) {
-                        fechaRegistro.textContent = fecha.toLocaleDateString('es-ES', {
+                        const fechaFormateada = fecha.toLocaleDateString('es-ES', {
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric'
                         });
+                        console.log('✏️ Cambiando fecha a:', fechaFormateada);
+                        fechaRegistro.textContent = fechaFormateada;
                     } else {
                         console.error('Fecha inválida recibida:', usuario.fecha_creacion);
                         fechaRegistro.textContent = 'Fecha no válida';
@@ -124,9 +147,13 @@ async function cargarInformacionPerfil() {
         console.error('❌ Error al cargar información del perfil:', error);
         
         // Mostrar datos por defecto en caso de error
+        const perfilTitulo = document.getElementById('perfil-titulo');
         const usuarioNombre = document.getElementById('usuario-nombre');
         const fechaRegistro = document.getElementById('fecha-registro');
+        const perfilBienvenida = document.querySelector('.perfil-bienvenida');
         
+        if (perfilTitulo) perfilTitulo.textContent = 'Mi Perfil';
+        if (perfilBienvenida) perfilBienvenida.textContent = 'Bienvenido/a a tu perfil de RM Metalúrgica';
         if (usuarioNombre) usuarioNombre.textContent = 'Usuario';
         if (fechaRegistro) fechaRegistro.textContent = 'No disponible';
         
@@ -147,17 +174,24 @@ function actualizarActividadReciente(usuario) {
     const actividades = [];
     const ahora = new Date();
     
-    // Actividad de hoy - inicio de sesión
-    actividades.push({
-        fecha: 'Hoy',
-        texto: 'Iniciaste sesión en tu cuenta',
-        icono: '🔑'
-    });
-    
     // Obtener actividades del localStorage (navegación del usuario)
     const actividadesGuardadas = obtenerActividadesUsuario();
     
-    // Si el usuario es reciente (menos de 7 días)
+    // Actividad de hoy - inicio de sesión (solo si no hay actividades recientes)
+    if (actividadesGuardadas.length === 0) {
+        actividades.push({
+            fecha: 'Hace un momento',
+            texto: 'Iniciaste sesión en tu cuenta',
+            icono: '🔑'
+        });
+    }
+    
+    // Agregar actividades del localStorage si existen
+    if (actividadesGuardadas.length > 0) {
+        actividadesGuardadas.forEach(act => actividades.push(act));
+    }
+    
+    // Si el usuario es reciente (menos de 7 días), agregar actividad de registro
     if (usuario && usuario.fecha_creacion) {
         const fechaCreacion = new Date(usuario.fecha_creacion);
         const diasDesdeCreacion = Math.floor((ahora - fechaCreacion) / (1000 * 60 * 60 * 24));
@@ -174,26 +208,29 @@ function actualizarActividadReciente(usuario) {
         }
     }
     
-    // Agregar actividades del localStorage si existen
-    if (actividadesGuardadas.length > 0) {
-        actividadesGuardadas.forEach(act => actividades.push(act));
-    } else {
-        // Actividades por defecto si no hay datos guardados
+    // Si no hay actividades, mostrar actividades por defecto
+    if (actividades.length === 0) {
         actividades.push({
-            fecha: 'Ayer',
-            texto: 'Visitaste la sección de Muebles',
-            icono: '🛋️'
+            fecha: 'Hace un momento',
+            texto: 'Accediste a tu perfil',
+            icono: '�'
         });
         
         actividades.push({
-            fecha: 'Hace 2 días',
-            texto: 'Consultaste Preguntas Frecuentes',
-            icono: '❓'
+            fecha: 'Hoy',
+            texto: 'Visitaste la página principal',
+            icono: '🏠'
         });
     }
     
-    // Limitar a máximo 5 actividades
-    const actividadesLimitadas = actividades.slice(0, 5);
+    // Limitar a máximo 5 actividades y ordenar por timestamp si existe
+    const actividadesOrdenadas = actividades.sort((a, b) => {
+        if (a.timestamp && b.timestamp) {
+            return b.timestamp - a.timestamp; // Más reciente primero
+        }
+        return 0;
+    });
+    const actividadesLimitadas = actividadesOrdenadas.slice(0, 5);
     
     // Crear elementos HTML para cada actividad
     actividadesLimitadas.forEach((actividad, index) => {
@@ -214,6 +251,11 @@ function actualizarActividadReciente(usuario) {
     
     // Agregar animación de entrada
     actividadLista.classList.add('actividades-cargadas');
+    
+    // Registrar la visita al perfil
+    if (typeof window.registrarActividadUsuario === 'function') {
+        window.registrarActividadUsuario('Accediste a tu perfil', '👤');
+    }
 }
 
 // Función para obtener actividades del usuario desde localStorage
@@ -405,7 +447,46 @@ document.addEventListener('DOMContentLoaded', () => {
     cargarInformacionPerfil();
     configurarAcciones();
     agregarEfectosVisuales();
+    
+    // Actualizar actividad cada 30 segundos para reflejar cambios
+    setInterval(() => {
+        const actividadesActuales = obtenerActividadesUsuario();
+        if (actividadesActuales.length > 0) {
+            // Solo actualizar la sección de actividades sin recargar todo el perfil
+            actualizarSoloActividades();
+        }
+    }, 30000); // 30 segundos
 });
+
+// Función para actualizar solo las actividades sin recargar toda la información del perfil
+function actualizarSoloActividades() {
+    const actividadLista = document.querySelector('.actividad-lista');
+    if (!actividadLista) return;
+    
+    const actividadesGuardadas = obtenerActividadesUsuario();
+    if (actividadesGuardadas.length === 0) return;
+    
+    // Limpiar y recargar solo las actividades
+    actividadLista.innerHTML = '';
+    
+    actividadesGuardadas.forEach((actividad, index) => {
+        const actividadItem = document.createElement('div');
+        actividadItem.className = 'actividad-item';
+        actividadItem.style.animationDelay = `${index * 0.1}s`;
+        
+        actividadItem.innerHTML = `
+            <span class="actividad-icono">${actividad.icono || '📋'}</span>
+            <div class="actividad-info">
+                <span class="actividad-fecha">${actividad.fecha}</span>
+                <span class="actividad-texto">${actividad.texto}</span>
+            </div>
+        `;
+        
+        actividadLista.appendChild(actividadItem);
+    });
+    
+    actividadLista.classList.add('actividades-cargadas');
+}
 
 // CSS para el efecto ripple y actividades mejoradas
 const style = document.createElement('style');

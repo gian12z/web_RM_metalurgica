@@ -152,22 +152,22 @@ body {
     font-size: 0.9em;
 }
 
-/* Estilo para la firma del desarrollador */
+/* Developer signature */
 .developer-signature {
-    margin-top: 8px !important;
-    font-size: 0.8em !important;
-    color: #aaa !important;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.85em;
+    color: #999;
 }
 
 .developer-signature a {
-    color: #66b3ff;
+    color: #666;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .developer-signature a:hover {
-    color: #4da6ff;
-    text-decoration: underline;
+    color: #999;
 }
 
 /* Estilos para el contenedor principal */
