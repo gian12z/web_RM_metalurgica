@@ -1,0 +1,119 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: -webkit-linear-gradient(90deg, #000000,#0d1521,#070e18);
+    background: linear-gradient(90deg, #000000,#0d1521,#070e18);
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    justify-content: center;
+}
+
+h1 {
+    color: #fff;
+    font-family: "Limelight", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+    margin-top: 40px;
+}
+
+form{
+    background-color:#212529;
+    padding: 40px;
+    border-radius: 10px;
+    width: 400px;
+    margin: auto;
+    margin-bottom: 40px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+    color: #fff;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #3d4042;
+    color: #fff;
+}
+
+
+input[type="radio"] {
+    width: auto;
+}
+
+button {
+    margin-top: 15px;
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+p {
+    margin-top: 15px;
+    color: #fff;
+}
+
+.botones{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between; /* o center, o flex-end */
+    gap: 10px;
+}
+
+.botones button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.botones button[type="submit"]:hover {
+    background-color: #45a29e;
+}
+
+.botones button[type="reset"] {
+    background-color: #c3073f;
+    color: #fff;
+}
+
+.botones button[type="reset"]:hover {
+    background-color: #950740;
+}
+
+.error{
+    color: rgb(255, 81, 81);
+}
+
+.escondido{
+    display: none;
+}
+
+/* Los estilos de navegación y footer se heredan del styles.css principal */
+
+/* Eliminar flechas de inputs type="numero de telefono" */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+

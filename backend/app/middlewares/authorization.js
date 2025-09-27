@@ -133,7 +133,6 @@ function conUsuario(req, res, next) {
 }
 
 export const methods = {
-    soloAdmin,
     soloPublico,
     soloAutenticados,
     conUsuario,

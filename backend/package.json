@@ -1,0 +1,28 @@
+{
+    "name": "rm-metalurgica-backend",
+    "version": "1.0.0",
+    "description": "Backend API para RM Metalúrgica",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "cookie-parser": "^1.4.6",
+        "dotenv": "^16.6.1",
+        "express": "^4.18.2",
+        "jsonwebtoken": "^9.0.2",
+        "mysql2": "^3.14.3"
+    },
+    "keywords": [
+        "api",
+        "backend",
+        "express",
+        "node",
+        "metalurgica"
+    ],
+    "author": "RM Metalurgica",
+    "license": "ISC"
+}

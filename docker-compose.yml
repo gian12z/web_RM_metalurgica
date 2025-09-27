@@ -1,0 +1,95 @@
+services:
+  # Base de datos MySQL
+  database:
+    image: mysql:8.0
+    container_name: rm_metalurgica_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "false"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/01-init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    ports:
+      - "3306:3306"
+    networks:
+      - rm_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  # Backend Node.js
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: rm_metalurgica_backend
+    restart: unless-stopped
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - JWT_COOKIE_EXPIRATION=${JWT_COOKIE_EXPIRATION}
+      - PORT=${PORT}
+      - NODE_ENV=${NODE_ENV}
+      - BCRYPT_SALT_ROUNDS=${BCRYPT_SALT_ROUNDS}
+      - CORS_ORIGIN=${CORS_ORIGIN}
+    ports:
+      - "4000:4000"
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - rm_network
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    healthcheck:
+      test: ["CMD", "node", "-e", "const http = require('http'); http.get('http://localhost:4000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }).on('error', () => process.exit(1));"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Frontend Nginx
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: rm_metalurgica_frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+    networks:
+      - rm_network
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+# Volúmenes
+volumes:
+  mysql_data:
+    driver: local
+
+# Red personalizada
+networks:
+  rm_network:
+    driver: bridge
+    name: rm_metalurgica_network
