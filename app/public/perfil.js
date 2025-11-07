@@ -318,8 +318,11 @@ function guardarActividad(texto, icono = '📋') {
 // Función para cerrar sesión
 async function cerrarSesion() {
     try {
-        const response = await fetch('/logout', {
+        // Enviar la petición al endpoint correcto del backend y enviar las
+        // cookies (credenciales) para que el servidor pueda invalidar la JWT.
+        const response = await fetch('/api/logout', {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             }

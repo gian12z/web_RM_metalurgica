@@ -142,12 +142,20 @@ app.get('/api/user-info', authorization.soloAutenticados, async (req, res) => {
 // Logout endpoint
 app.post('/api/logout', (req, res) => {
     try {
-        // Eliminar cookie JWT
-        res.clearCookie('jwt', {
-            path: '/',
-            httpOnly: false,
-            secure: false,
-            sameSite: 'lax'
+        // Eliminar cookie JWT - intentar varias configuraciones para asegurar la eliminación
+        const cookieVariants = [
+            { path: '/', httpOnly: false, secure: false, sameSite: 'none' },
+            { path: '/', httpOnly: false, secure: false, sameSite: 'lax' },
+            { path: '/', httpOnly: false, secure: false }
+        ];
+
+        cookieVariants.forEach(opts => {
+            try {
+                res.clearCookie('jwt', opts);
+            } catch (e) {
+                // Ignorar errores individuales al intentar borrar variantes
+                console.warn('No se pudo clearCookie con opts', opts, e.message || e);
+            }
         });
         
         // Headers para prevenir cache

@@ -43,17 +43,46 @@ async function login(req,res){
         process.env.JWT_SECRET, 
         {expiresIn:process.env.JWT_EXPIRATION});
     
+    // Parsear JWT_COOKIE_EXPIRATION aceptando valores numéricos (días) o sufijos (ms,s,m,h,d)
+    function parseDurationToMs(value) {
+        if (!value) return NaN;
+        if (/^\d+$/.test(value)) {
+            return Number(value) * 24 * 60 * 60 * 1000;
+        }
+        const m = value.match(/^(\d+)(ms|s|m|h|d)$/);
+        if (m) {
+            const n = Number(m[1]);
+            const unit = m[2];
+            const multipliers = {
+                ms: 1,
+                s: 1000,
+                m: 60 * 1000,
+                h: 60 * 60 * 1000,
+                d: 24 * 60 * 60 * 1000
+            };
+            return n * (multipliers[unit] || 1);
+        }
+        const num = Number(value);
+        return Number.isFinite(num) ? num : NaN;
+    }
+
+    let maxAgeMs = parseDurationToMs(process.env.JWT_COOKIE_EXPIRATION);
+    if (Number.isNaN(maxAgeMs)) {
+        console.warn('JWT_COOKIE_EXPIRATION inválido, usando 1 día por defecto');
+        maxAgeMs = 24 * 60 * 60 * 1000;
+    }
+
     const cookieOptions = {
-        maxAge: process.env.JWT_COOKIE_EXPIRATION * 24 * 60 * 60 * 1000, // usar maxAge en vez de expires
+        maxAge: maxAgeMs, // milisegundos
         path: '/',
-        httpOnly: false, 
-        secure: false,   
-        sameSite: 'none'  
+        httpOnly: false,
+        secure: false,
+        sameSite: 'none'
     }
     
     console.log('🍪 Configurando cookie con opciones:', {
         ...cookieOptions,
-        maxAge: `${cookieOptions.maxAge}ms (${cookieOptions.maxAge/(24*60*60*1000)} días)`
+        maxAge: `${cookieOptions.maxAge}ms (${(cookieOptions.maxAge/(24*60*60*1000)).toFixed(2)} días)`
     });
     console.log('🔑 Token JWT creado:', {
         length: token.length,
@@ -62,10 +91,11 @@ async function login(req,res){
     });
     
     // Establecer cookie con múltiples estrategias para máxima compatibilidad
+    const maxAgeSeconds = Math.floor(cookieOptions.maxAge / 1000);
     res.setHeader('Set-Cookie', [
-        `jwt=${token}; Path=/; Max-Age=${cookieOptions.maxAge/1000}; SameSite=none`,
-        `jwt=${token}; Path=/; Max-Age=${cookieOptions.maxAge/1000}; SameSite=lax`,
-        `jwt=${token}; Path=/; Max-Age=${cookieOptions.maxAge/1000}`
+        `jwt=${token}; Path=/; Max-Age=${maxAgeSeconds}; SameSite=none`,
+        `jwt=${token}; Path=/; Max-Age=${maxAgeSeconds}; SameSite=lax`,
+        `jwt=${token}; Path=/; Max-Age=${maxAgeSeconds}`
     ]);
     res.cookie("jwt", token, cookieOptions);
     

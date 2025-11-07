@@ -297,8 +297,9 @@ function configurarLogout() {
             console.log('⚠️ Usando logout tradicional como fallback desde navegación');
             try {
                 console.log('📡 Enviando petición de logout desde navegación...');
-                const response = await fetch('/logout', {
+                const response = await fetch('/api/logout', {
                     method: 'POST',
+                    credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json'
                     }
