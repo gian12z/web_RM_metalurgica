@@ -8,6 +8,119 @@ body {
     overflow-x: hidden;
 }
 
+/* Theme variables and jobs-search styles (needed for the search layout) */
+:root {
+    --input-bg: #0f1b26;
+    --primary: #2b7be9;
+    --primary-hover: #1f6fe0;
+    --shadow: rgba(2,6,23,0.6);
+    --text-primary: #e6eef8;
+    --text-muted: #94a3b8;
+}
+
+.jobs-search {
+    max-width: 1000px;
+    /* reduced vertical spacing to bring search closer to products */
+    margin: 0.5rem auto 0;
+    padding: 0 1rem;
+}
+
+.jobs-search .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--input-bg);
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px -8px var(--shadow);
+}
+
+.jobs-search .search-bar button {
+    margin-left: auto;
+}
+
+.jobs-search .search-filters {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+/* Input and button specifics to ensure proper layout */
+.jobs-search .search-bar input[type="text"] {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    padding: 0.6rem 0.25rem;
+    font-size: 1.05rem;
+    font-family: inherit;
+    -webkit-text-fill-color: var(--text-primary);
+}
+
+.jobs-search .search-bar input[type="text"]::placeholder {
+    color: var(--text-muted);
+}
+
+.jobs-search .search-bar input[type="text"]:-webkit-autofill,
+.jobs-search .search-bar input[type="text"]:-webkit-autofill:hover,
+.jobs-search .search-bar input[type="text"]:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text-primary) !important;
+    -webkit-box-shadow: 0 0 0px 1000px var(--input-bg) inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.jobs-search .search-bar button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    min-width: 90px;
+    height: 42px;
+    box-shadow: 0 6px 18px rgba(11,68,140,0.18);
+}
+
+.jobs-search .search-bar button:hover {
+    background: var(--primary-hover);
+}
+
+.jobs-search .search-bar svg {
+    flex: 0 0 auto;
+    color: var(--text-muted);
+}
+
+/* nicer select "chips" under the search bar */
+.jobs-search .search-filters select {
+    padding: 0.6rem 0.9rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+    border: 0;
+    color: var(--text-primary);
+    box-shadow: 0 6px 16px rgba(2,6,23,0.45);
+}
+
+/* Make the closed select and its options dark with white text. Note: native OS dropdowns
+   may still apply their own rendering when opened, but modern browsers respect these rules */
+.jobs-search .search-filters select {
+    background: #071018; /* solid dark background */
+    color: #fff;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.jobs-search .search-filters select:focus {
+    outline: 2px solid rgba(255,255,255,0.06);
+}
+
+.jobs-search .search-filters select option {
+    background: #071018;
+    color: #fff;
+}
+
 /* Estilos para el contenedor principal */
 .contenedor-principal {
     display: flex;
@@ -183,7 +296,9 @@ h1 {
     font-weight: 400;
     font-style: normal;
     text-align: center;
-    margin-top: 40px;
+    /* tightened spacing */
+    margin-top: 12px;
+    margin-bottom: 6px;
 }
 
 .contenedor-productos {
@@ -193,6 +308,8 @@ h1 {
     padding: 20px;
     max-width: 650px;
     margin: auto;
+    /* ensure product grids sit close under the search/headers */
+    margin-top: 8px;
 }
 
 .producto {
@@ -238,6 +355,15 @@ h1 {
     font-weight: bold;
     font-size: 1.1em;
     font-family: "Limelight", sans-serif;
+}
+
+.p1 {
+    color: #fff;
+    font-family: "Limelight", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+    margin-top: 10px;
 }
 
 h2 {

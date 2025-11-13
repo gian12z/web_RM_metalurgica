@@ -16,7 +16,34 @@
         <nav class="nav-bar" id="navigation">
         </nav>
 <main class="main-content">
-    <h1>Todos nuestros trabajos</h1>
+    <h1>Transformá tu casa con nuestros diseños personalizados</h1>
+    <p class="p1">Explora tu estilo, nosotros lo hacemos realidad</p>
+    <form id="empleos-search-form" class="jobs-search" role="search">
+        <div class="search-bar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-search">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+            <path d="M21 21l-6 -6" />
+        </svg>
+
+        <input name="search" id="trabajos-search-input" required type="text"
+            placeholder="Explora nuestros trabajos">
+        <button type="submit">Buscar</button>
+        </div>
+
+        <div class="search-filters">
+            <select name="technology" id="filter-trabajos">
+            <option value="">Trabajos</option>
+                <option value="mesas">Mesas</option>
+                <option value="escritorios">Escritorios</option>
+                <option value="mesas-ratonas">Mesas ratonas</option>
+                <option value="trabajos-personalizados">Trabajos personalizados</option>
+        </select>
+        </div>
+        </form>
+    <div class="mesas">
     <h2>Mesas:</h2>
         <div class="contenedor-productos">
             <div class="producto" data-link="/barra">
@@ -27,25 +54,25 @@
             </div>
                 <div class="producto" data-link="/mesa-comedor-1">
                     <img src="/imagenes_RM/mesa_y_sillas.jpg" alt="Mesa y sillas">
-                    <h3>Mesa de comedor moderna</h3>
+                    <h3>Mesa moderna</h3>
                     <p class="precio">Precio:</p>
                     <p class="valor">$000.000</p>
                 </div>
                 <div class="producto" data-link="/mesa-comedor-2">
                     <img src="/imagenes_RM/mesa_de_vidrio.jpg" alt="Mesa de vidrio">
-                    <h3>Mesa de comedor vidrio</h3>
+                    <h3>Mesa de vidrio</h3>
                     <p class="precio">Precio:</p>
                     <p class="valor">$000.000</p>
                 </div>
                 <div class="producto" data-link="/mesa-comedor-3">
                     <img src="/imagenes_RM/barra_y_sillas.jpg" alt="Mesa comedor">
-                    <h3>Mesa comedor clásica</h3>
+                    <h3>Mesa clásica</h3>
                     <p class="precio">Precio:</p>
                     <p class="valor">$000.000</p>
                 </div>
                 <div class="producto" data-link="/mesa-comedor-4">
                     <img src="/imagenes_RM/barra_y_sillas.jpg" alt="Mesa comedor">
-                    <h3>Mesa comedor familiar</h3>
+                    <h3>Mesa familiar</h3>
                     <p class="precio">Precio:</p>
                     <p class="valor">$000.000</p>
                 </div>
@@ -56,6 +83,8 @@
                     <p class="valor">$000.000</p>
                 </div>
         </div>
+    </div>
+    <div class="escritorios">
     <h2>Escritorios:</h2>
         <div class="contenedor-productos">
             <div class="producto" data-link="/escritorio-moderno">
@@ -95,11 +124,13 @@
                     <p class="valor">$000.000</p>
                 </div>
         </div>
+    </div>
+    <div class="mesas ratonas">
     <h2>Mesas Ratonas:</h2>
     <div class="contenedor-productos">
             <div class="producto" data-link="/mesa-ratona-moderna">
                 <img src="/imagenes_RM/mesa_ratona.jpg" alt="Mesa ratona">
-                <h3>Mesa ratona moderna</h3>
+                <h3>Mesa ratona</h3>
                 <p class="precio">Precio:</p>
                 <p class="valor">$000.000</p>
             </div>
@@ -111,7 +142,7 @@
                 </div>
                 <div class="producto" data-link="/mesa-ratona-vidrio">
                     <img src="/imagenes_RM/mesa_de_vidrio.jpg" alt="Mesa de vidrio">
-                    <h3>Mesa ratona de vidrio</h3>
+                    <h3>Mesa ratona vidrio</h3>
                     <p class="precio">Precio:</p>
                     <p class="valor">$000.000</p>
                 </div>
@@ -134,6 +165,7 @@
                     <p class="valor">$000.000</p>
                 </div>
         </div>
+    </div>
 </main>
     <footer class="footer">
         <div class="footer-content">
@@ -160,6 +192,7 @@
     </div>
 
     <script src="/navegacion.js"></script>
+    <script src="/filter_trabajos.js"></script>
     <script src="/productos-clickeables.js"></script>
 </body>
 </html>
